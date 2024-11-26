@@ -1,15 +1,17 @@
-import conectarAoBanco from "../config/dbConfig.js";
+//Model cuidará dos nossos dados
+import { ObjectId } from "mongodb";
+import connectToBank from "../config/dbConfig.js";
 
-const conexao = await conectarAoBanco(process.env.STRING_CONEXAO);
+const connection = await connectToBank(process.env.STRING_CONNECTION);
 
-export async function getTodosPosts() {
-  const db = conexao.db("imersao-instabytes");
-  const colecao = db.collection("posts");
-  return colecao.find().toArray();
+export async function getAllPosts() {
+  const db = connection.db("imersao-instabytes");
+  const collection = db.collection("posts");
+  return collection.find().toArray();
 }
 
-export async function criarPost(novoPost) {
-  const db = conexao.db("imersao-instabytes");
-  const colecao = db.collection("posts");
-  return colecao.insertOne(novoPost);
+export async function createPost(newPost) {
+  const db = connection.db("imersao-instabytes");
+  const collection = db.collection("posts");
+  return collection.insertOne(newPost);
 }

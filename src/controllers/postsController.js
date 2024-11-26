@@ -1,35 +1,35 @@
 import fs from "fs";
-import { getTodosPosts, criarPost } from "../models/postsModel.js";
+import { getAllPosts, createPost } from "../models/postsModel.js";
 
-export async function listarPosts (request, response) {
-  const posts = await getTodosPosts();
+export async function listPosts (request, response) {
+  const posts = await getAllPosts();
   response.status(200).json(posts);
 };
 
-export async function postarNovoPost(request, response) {
-  const novoPost = request.body;
+export async function postNewPost(request, response) {
+  const newPost = request.body;
 
   try {
-    const postCriado = await criarPost(novoPost);
-    response.status(200).json(postCriado);
+    const postCreated = await createPost(newPost);
+    response.status(200).json(postCreated);
   } catch (error) {
     console.error(error.message);
     response.status(500).json({"Erro" : "Falha na requisição."});
   }
 }
 
-export async function uploadImagem(request, response) {
-  const novoPost = {
-    descricao: "",
-    imgUrl: request.file.originalname,
-    alt: ""
+export async function uploadImage(request, response) {
+  const newPost = {
+    descricao : "",
+    imgUrl : request.file.originalname,
+    alt : ""
   };
 
   try {
-    const postCriado = await criarPost(novoPost);
-    const imagemAtualizada = `uploads/${postCriado.insertedId}.png`;
-    fs.renameSync(request.file.path, imagemAtualizada);
-    response.status(200).json(postCriado);
+    const postCreated = await createPost(newPost);
+    const updatedImage = `uploads/${postCreated.insertedId}.png`;
+    fs.renameSync(request.file.path, updatedImage);
+    response.status(200).json(postCreated);
   } catch (error) {
     console.error(error.message);
     response.status(500).json({"Erro" : "Falha na requisição."});
